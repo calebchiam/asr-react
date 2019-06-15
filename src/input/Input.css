@@ -1,0 +1,29 @@
+ul.header li {
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+}
+ul.header {
+  background-color: white;
+  padding: 0;
+}
+ul.header li a {
+  color: #555;
+  text-decoration: none;
+  /* padding: 8px; */
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+ul.header li a.active {
+  /* background-color: #555; */
+  color: black;
+}
+
+
+.Title {
+  margin-bottom: 32px;
+  color: white;
+  align-items: center;
+}

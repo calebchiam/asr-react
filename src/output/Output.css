@@ -1,0 +1,12 @@
+.Title {
+  margin-bottom: 32px;
+  color: #555;
+  align-items: center;
+}
+
+.outputWrapper {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

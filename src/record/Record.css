@@ -1,0 +1,25 @@
+button img.Icon {
+  opacity: 1.0;
+  height: 28px;
+  width: 28px;
+}
+
+audio:active, audio:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+}
+
+button:active, button:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+}
+
+.record button {
+  margin: 5px;
+}
+
+button {
+  height: 40px;
+}
