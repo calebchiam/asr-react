@@ -48,9 +48,11 @@ class Realtime extends Component {
     console.log(recordedBlob);
     this.setState(prevState => ({
       blobNumber: prevState.blobNumber + 1,
+      blobObjs: prevState.blobObjs.concat(recordedBlob),
     }));
     if (this.state.blobNumber % blobInterval === 0) {
-      this.stopRecording(); // automatically stops recording
+      console.log(this.state.blobObjs);
+      this.uploadBlob(this.state.blobNumber, blobInterval);
     }
   }
 
@@ -58,11 +60,10 @@ class Realtime extends Component {
     this.setState({
       blobURL: blobObject.blobURL,
       blobObj: blobObject.blob,
-    });
-    this.uploadBlob
+     });
   }
 
-  uploadBlob() {
+  uploadBlob(currBlobNum, blobInterval) {
     const req = new XMLHttpRequest();
     const formData = new FormData();
     console.log("Uploading the blob ending at: " + currBlobNum);
