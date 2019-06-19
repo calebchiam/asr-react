@@ -11,13 +11,14 @@ class Realtime extends Component {
       isPaused: false,
       blobObj: null,
       blobObjs: [],
-      blobNumber: 0,
+      firstBlob: true,
     }
     this.startOrPauseRecording = this.startOrPauseRecording.bind(this);
     this.stopRecording = this.stopRecording.bind(this);
     this.onStop = this.onStop.bind(this);
     this.uploadBlob = this.uploadBlob.bind(this);
     this.onData = this.onData.bind(this);
+    this.stopRecordingPermanent = this.stopRecordingPermanent.bind(this);
   }
 
   startOrPauseRecording() {
@@ -34,6 +35,11 @@ class Realtime extends Component {
 
   stopRecording() {
     this.setState({ isRecording: false });
+    this.setState({ isRecording: true });
+  }
+
+  stopRecordingPermanent() {
+    this.setState({ isRecording: false });
   }
   //
   // onSave=(blobObject) => {
@@ -44,13 +50,15 @@ class Realtime extends Component {
   // }
 
   onData(recordedBlob) {
-    const blobInterval = 100;
+    const blobThreshold = 100;
     console.log(recordedBlob);
-    this.setState(prevState => ({
-      blobNumber: prevState.blobNumber + 1,
-    }));
-    if (this.state.blobNumber % blobInterval === 0) {
-      this.stopRecording(); // automatically stops recording
+    this.setState({
+      blobObjs: this.state.blobObjs.concat([recordedBlob]),
+    })
+    console.log(this.state.blobObjs.length);
+    if (this.state.blobObjs.length % blobThreshold === 0) {
+      this.uploadBlob();
+      // this.stopRecording(); // automatically stops recording
     }
   }
 
@@ -58,25 +66,25 @@ class Realtime extends Component {
     this.setState({
       blobURL: blobObject.blobURL,
       blobObj: blobObject.blob,
+      blobObjs: [],
     });
-    this.uploadBlob
+    this.uploadBlob();
   }
 
   uploadBlob() {
     const req = new XMLHttpRequest();
     const formData = new FormData();
-    console.log("Uploading the blob ending at: " + currBlobNum);
-
-    // first blob is a header blob that must be prepended for the Blob slice to be recognized as valid
-    var combinedBlob = (currBlobNum === blobInterval) ?
-                        new Blob(this.state.blobObjs.slice(0, currBlobNum), {type:"audio/webm;codecs=opus"}) :
-                        new Blob([this.state.blobObjs[0]].concat(this.state.blobObjs.slice(currBlobNum - blobInterval, currBlobNum)), {type: "audio/webm;codecs=opus"}
-                      );
-    console.log(combinedBlob);
-    formData.append("file", combinedBlob, "streaming_audio.wav");
+    console.log("Trying to upload")
+    console.log(this.state.blobObjs);
+    formData.append("file", new Blob(this.state.blobObjs, {type: "audio/webm;codecs=opus"}), "streaming_audio.wav");
     req.open("POST", "http://localhost:5000/convert_and_parse");
     req.send(formData);
-    this.props.startLoading();
+    if (this.state.firstBlob) {
+      this.props.startLoading();
+      this.setState({
+        firstBlob: false,
+      })
+    }
     req.onload = () => this.props.handleUpload("streaming_audio.wav", JSON.parse(req.response)["text"]);
   }
 
@@ -110,7 +118,7 @@ class Realtime extends Component {
         <button
           className="btn btn-info"
           disabled={!this.state.isRecording}
-          onClick={this.stopRecording}>
+          onClick={this.stopRecordingPermanent}>
           <img
             alt="Stop recording"
             className="Icon"
