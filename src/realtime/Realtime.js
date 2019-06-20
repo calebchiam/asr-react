@@ -57,7 +57,7 @@ class Realtime extends Component {
     })
     console.log(this.state.blobObjs.length);
     if (this.state.blobObjs.length % blobThreshold === 0) {
-      this.uploadBlob(this.state.blobObjs.length, blobThreshold);
+      this.uploadBlob();
       // this.stopRecording(); // automatically stops recording
     }
   }
@@ -66,23 +66,17 @@ class Realtime extends Component {
     this.setState({
       blobURL: blobObject.blobURL,
       blobObj: blobObject.blob,
-      // blobObjs: [],
+      blobObjs: [],
     });
     this.uploadBlob();
   }
 
-  uploadBlob(currBlobNum, blobInterval) {
+  uploadBlob() {
     const req = new XMLHttpRequest();
     const formData = new FormData();
     console.log("Trying to upload")
-
-    var combinedBlob = (currBlobNum === blobInterval) ?
-                        new Blob(this.state.blobObjs.slice(0, currBlobNum), {type: "audio/webm;codecs=opus"}) :
-                        new Blob([this.state.blobObjs[0]].concat(this.state.blobObjs.slice(currBlobNum - blobInterval, currBlobNum)), {type: "audio/webm;codecs=opus"});
-
-    console.log([this.state.blobObjs[0]].concat(this.state.blobObjs.slice(currBlobNum - blobInterval, currBlobNum)))
-    console.log(combinedBlob);
-    formData.append("file", combinedBlob, "streaming_audio.wav");
+    console.log(this.state.blobObjs);
+    formData.append("file", new Blob(this.state.blobObjs, {type: "audio/webm;codecs=opus"}), "streaming_audio.wav");
     req.open("POST", "http://localhost:5000/convert_and_parse");
     req.send(formData);
     if (this.state.firstBlob) {
