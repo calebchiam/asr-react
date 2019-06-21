@@ -11,22 +11,14 @@ class Record extends Component {
       isPaused: false,
       blobObj: null,
     }
-    this.startOrPauseRecording = this.startOrPauseRecording.bind(this);
+    this.startRecording = this.startRecording.bind(this);
     this.stopRecording = this.stopRecording.bind(this);
     this.onStop = this.onStop.bind(this);
     this.uploadBlob = this.uploadBlob.bind(this);
   }
 
-  startOrPauseRecording() {
-    const { isPaused, isRecording } = this.state;
-
-    if (isPaused) {
-      this.setState({ isPaused: false })
-    } else if(isRecording) {
-      this.setState({ isPaused: true })
-    } else {
-      this.setState({ isRecording: true })
-    }
+  startRecording() {
+    this.setState({ isRecording: true });
   }
 
   stopRecording() {
@@ -69,12 +61,10 @@ class Record extends Component {
         <ReactMic
           className="oscilloscope"
           record={this.state.isRecording}
-          pause={this.state.isPaused}
           backgroundColor="white"
           visualSetting="sinewave"
           audioBitsPerSecond= {128000}
           onStop={this.onStop}
-          onStart={this.onStart}
           onSave={this.onSave}
           onData={this.onData}
           width="300"
@@ -86,10 +76,9 @@ class Record extends Component {
 
         <button
           className="btn btn-info"
-          onClick={this.startOrPauseRecording}>
-          { (this.state.isRecording && !this.state.isPaused )?
-            <img alt="Pause" className="Icon" src="baseline-pause-24px.svg" /> :
-              <img alt="Record" className="Icon" src="baseline-mic-24px.svg" /> }
+          disabled={this.state.isRecording}
+          onClick={this.startRecording}>
+            <img alt="Record" className="Icon" src="baseline-mic-24px.svg" />
         </button>
         <button
           className="btn btn-info"
