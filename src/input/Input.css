@@ -27,3 +27,8 @@ ul.header li a.active {
   color: white;
   align-items: center;
 }
+
+.cardWrapper {
+  height: 100%;
+  width: 100%;
+}

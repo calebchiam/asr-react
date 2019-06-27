@@ -5,7 +5,7 @@ import { BounceLoader } from 'react-spinners';
 class Output extends Component {
   render() {
       return (
-        <div>
+        <div className="cardWrapper">
         <span className="Title">Speech-to-text transcription</span>
         <div className="outputWrapper">
 

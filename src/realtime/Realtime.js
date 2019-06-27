@@ -13,19 +13,23 @@ class Realtime extends Component {
       intermediate: true,
       firstBlob: true,
     }
-    // this.startButton = React.createRef();
-    // this.stopButton = React.createRef();
-    // this.uploadButton = React.createRef();
     this.startRecording = this.startRecording.bind(this);
     this.stopRecording = this.stopRecording.bind(this);
-    this.onStop = this.onStop.bind(this);
     this.uploadBlob = this.uploadBlob.bind(this);
+    this.onStop = this.onStop.bind(this);
     this.onData = this.onData.bind(this);
     this.stopAndContinueRecording = this.stopAndContinueRecording.bind(this);
   }
 
   startRecording() {
-    this.setState({ isRecording: true });
+    this.setState({
+      isRecording: true,
+    });
+    if (!this.state.intermediate) {
+      this.setState({
+        intermediate: true,
+      })
+    }
   }
 
   stopRecording() {
@@ -45,7 +49,7 @@ class Realtime extends Component {
     this.setState(prevState => ({
       count: prevState.count + 1,
     }), ()=>{
-      if (this.state.count % 100 === 0) {
+      if (this.state.count % 60 === 0) {
         console.log(this.state.count);
         this.stopAndContinueRecording();
       }
@@ -99,35 +103,34 @@ class Realtime extends Component {
           width="300"
           strokeColor="#000000" />
 
-
+        <br />
         <button
           className="btn btn-info"
           disabled={this.state.isRecording}
           onClick={this.startRecording}
-          ref={this.startButton}>
+          >
             <img alt="Record" className="Icon" src="baseline-mic-24px.svg" />
         </button>
         <button
           className="btn btn-info"
           disabled={!this.state.isRecording}
           onClick={this.stopRecording}
-          ref={this.stopButton}>
+          >
           <img
             alt="Stop recording"
             className="Icon"
             src="baseline-stop-24px.svg"
           />
         </button>
-        <a href={this.state.blobURL} download="audio.wav">
-          <button className="btn btn-info"
-                  disabled={!this.state.blobURL}>
-            <img
-              alt="Download"
-              className="Icon"
-              src="baseline-save-24px.svg"
-            />
-          </button>
-        </a>
+        <button className="btn btn-info"
+                disabled={!this.state.blobURL}
+                onClick={this.props.clearText}>
+          <img
+            alt="Refresh"
+            className="Icon"
+            src="baseline-refresh-24px.svg"
+          />
+        </button>
       </div>
     );
   }

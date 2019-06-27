@@ -6,14 +6,14 @@ import {
 } from "react-router-dom";
 import Upload from "../upload/Upload";
 import Record from "../record/Record";
-import Realtime from "../realtime2/Realtime"
+import Realtime from "../realtime/Realtime"
 import "./Input.css";
 
 class Input extends Component {
   render() {
     return(
       <HashRouter>
-        <div>
+        <div className="cardWrapper">
           <ul className="header">
             <li><NavLink exact to="/">Upload</NavLink></li>
             <li><NavLink to="/record">Record</NavLink></li>

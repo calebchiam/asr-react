@@ -5,8 +5,13 @@
 }
 
 .outputWrapper {
-  height: 50vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.cardWrapper {
+  height: 100%;
+  width: 100%;
 }

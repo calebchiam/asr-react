@@ -13,6 +13,7 @@ class Interface extends Component {
     };
     this.handleUpload = this.handleUpload.bind(this);
     this.startLoading = this.startLoading.bind(this);
+    this.clearText = this.clearText.bind(this);
   };
 
   handleUpload(audio, text) {
@@ -22,6 +23,13 @@ class Interface extends Component {
       loading: false,
     }))
   };
+
+  clearText() {
+    this.setState({
+      audio_file: "",
+      text: "",
+    })
+  }
 
   startLoading() {
     this.setState({
@@ -35,7 +43,7 @@ class Interface extends Component {
     return (
       <div className="Interface">
         <div className="Card">
-          <Input handleUpload={(audio, text) => this.handleUpload(audio, text)} startLoading={() => this.startLoading()}/>
+          <Input clearText={() => this.clearText()} handleUpload={(audio, text) => this.handleUpload(audio, text)} startLoading={() => this.startLoading()}/>
         </div>
         <div className="Card">
           <Output audio_file={this.state.audio_file} text={this.state.text} loading={this.state.loading}/>
