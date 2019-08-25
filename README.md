@@ -24,7 +24,14 @@ It comes with three different views:
 
 ## Deployment
 
-To deploy this project after cloning:
+### Download DeepSpeech model
+
+Clone the repository.
+
+You must then download the Deepspeech 0.5.1 model from [here](https://github.com/mozilla/DeepSpeech/releases/tag/v0.5.1).
+
+Unzip the tar and leave the contents in deepspeech/models.
+
 ```
 npm start
 cd deepspeech-server
