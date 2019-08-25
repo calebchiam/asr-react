@@ -119,9 +119,6 @@ def convert_and_parse_audio():
 
             out = run_inference(ds, audio, fs, audio_length)
 
-            if len(out) == 0:
-                return error_json("Audio speech to text failed: check that this is a 16-bit 16khZ mono WAVE audio file.")
-
             return jsonify({"text": out.strip("\n")})
 
     return '''
